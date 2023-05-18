@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:graphcash_macos/components/mainMenuBtn.dart';
+import 'package:graphcash_macos/charts/series/categoryExpenditureSeries.dart';
+import 'package:graphcash_macos/charts/catergoryExpenditureChart.dart';
+import 'package:graphcash_macos/charts/series/expenditureProgressionSeries.dart';
+import 'package:graphcash_macos/charts/expenditureProgressionChart.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -9,12 +14,58 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final List<ExpenditureProgressionSeries> exps = [
+    ExpenditureProgressionSeries(
+      budgetRemaining: 590,
+      dayNum: 1,
+      barColor: charts.ColorUtil.fromDartColor(Colors.purple),
+    ),
+    ExpenditureProgressionSeries(
+      budgetRemaining: 500,
+      dayNum: 2,
+      barColor: charts.ColorUtil.fromDartColor(Colors.purple),
+    ),
+    ExpenditureProgressionSeries(
+      budgetRemaining: 445,
+      dayNum: 3,
+      barColor: charts.ColorUtil.fromDartColor(Colors.purple),
+    ),
+    ExpenditureProgressionSeries(
+      budgetRemaining: 410,
+      dayNum: 4,
+      barColor: charts.ColorUtil.fromDartColor(Colors.purple),
+    ),
+  ];
+
+  final List<CategoryExpenditureSeries> ctgExps = [
+    CategoryExpenditureSeries(
+      categoryName: "PH1",
+      totalAmount: 100,
+      barColor: charts.ColorUtil.fromDartColor(Colors.purple),
+    ),
+    CategoryExpenditureSeries(
+      categoryName: "PH2",
+      totalAmount: 200,
+      barColor: charts.ColorUtil.fromDartColor(Colors.purple),
+    ),
+    CategoryExpenditureSeries(
+      categoryName: "PH3",
+      totalAmount: 300,
+      barColor: charts.ColorUtil.fromDartColor(Colors.purple),
+    ),
+    CategoryExpenditureSeries(
+      categoryName: "PH4",
+      totalAmount: 400,
+      barColor: charts.ColorUtil.fromDartColor(Colors.purple),
+    ),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           toolbarHeight: 80,
-          backgroundColor: Color.fromARGB(255, 50, 50, 50),
+          backgroundColor: const Color.fromARGB(255, 50, 50, 50),
           title: const Text(
             "Graph Cash",
             style: TextStyle(fontSize: 40),
@@ -29,12 +80,19 @@ class _HomePageState extends State<HomePage> {
               Container(
                 height: 500,
                 child: Row(
-                  children: <Widget>[],
+                  children: <Widget>[
+                    CategoryExpenditureChart(
+                      data: ctgExps,
+                    ),
+                    ExpenditureProgressionChart(
+                      data: exps,
+                    )
+                  ],
                 ),
               ),
               Container(
                 height: 200,
-                color: Color.fromARGB(255, 33, 33, 33),
+                color: const Color.fromARGB(255, 33, 33, 33),
                 child: ButtonBar(
                   //constraints: const BoxConstraints(maxWidth: 200),
                   mainAxisSize: MainAxisSize.max,
