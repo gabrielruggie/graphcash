@@ -4,8 +4,9 @@ import 'package:graphcash_macos/charts/series/expenditureProgressionSeries.dart'
 
 class ExpenditureProgressionChart extends StatelessWidget {
   final List<ExpenditureProgressionSeries> data;
+  final List<ExpenditureProgressionSeries> data2;
 
-  ExpenditureProgressionChart({required this.data});
+  ExpenditureProgressionChart({required this.data, required this.data2});
 
   @override
   Widget build(BuildContext context) {
@@ -13,10 +14,21 @@ class ExpenditureProgressionChart extends StatelessWidget {
       charts.Series(
           id: "Category Expenditures",
           data: data,
-          domainFn: (ExpenditureProgressionSeries series, _) =>
+          // X Axis
+          domainFn: (ExpenditureProgressionSeries series, _) => series.dayNum,
+          // Y Axis
+          measureFn: (ExpenditureProgressionSeries series, _) =>
               series.budgetRemaining,
-          measureFn: (ExpenditureProgressionSeries series, _) => series.dayNum,
-          colorFn: (ExpenditureProgressionSeries series, _) => series.barColor)
+          colorFn: (ExpenditureProgressionSeries series, _) => series.barColor),
+      charts.Series(
+          id: "Category Expenditures1",
+          data: data2,
+          // X Axis
+          domainFn: (ExpenditureProgressionSeries series, _) => series.dayNum,
+          // Y Axis
+          measureFn: (ExpenditureProgressionSeries series, _) =>
+              series.budgetRemaining,
+          colorFn: (ExpenditureProgressionSeries series, _) => series.barColor),
     ];
 
     return Container(
@@ -24,21 +36,35 @@ class ExpenditureProgressionChart extends StatelessWidget {
       height: 450,
       padding: const EdgeInsets.all(25),
       child: Card(
+        color: Color.fromARGB(255, 44, 44, 44),
         child: Padding(
           padding: const EdgeInsets.all(9.0),
           child: Column(
             children: <Widget>[
-              Text(
-                "Total Expenditures Per Declared Category",
-                style: Theme.of(context).textTheme.bodySmall,
+              const Text(
+                "Actual Budget Progression Vs Ideal",
+                style:
+                    TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
               ),
               Expanded(
                 child: charts.LineChart(series,
                     domainAxis: const charts.NumericAxisSpec(
+                      renderSpec: charts.GridlineRendererSpec(
+                          labelStyle:
+                              charts.TextStyleSpec(color: charts.Color.white),
+                          lineStyle:
+                              charts.LineStyleSpec(color: charts.Color.white)),
                       tickProviderSpec:
                           charts.BasicNumericTickProviderSpec(zeroBound: false),
-                      viewport: charts.NumericExtents(2016.0, 2022.0),
+                      viewport: charts.NumericExtents(
+                          1, 30), // <== Changes X Axis bounds
                     ),
+                    primaryMeasureAxis: const charts.NumericAxisSpec(
+                        renderSpec: charts.GridlineRendererSpec(
+                            labelStyle:
+                                charts.TextStyleSpec(color: charts.Color.white),
+                            lineStyle: charts.LineStyleSpec(
+                                color: charts.Color.white))),
                     animate: true),
               )
             ],

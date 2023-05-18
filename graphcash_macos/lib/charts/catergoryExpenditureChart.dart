@@ -25,13 +25,15 @@ class CategoryExpenditureChart extends StatelessWidget {
       height: 450,
       padding: const EdgeInsets.all(25),
       child: Card(
+        color: Color.fromARGB(255, 44, 44, 44),
         child: Padding(
           padding: const EdgeInsets.all(9.0),
           child: Column(
             children: <Widget>[
-              Text(
-                "Total Expenditures Per Declared Category",
-                style: Theme.of(context).textTheme.bodySmall,
+              const Text(
+                "Total Expenditures Per Category",
+                style:
+                    TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
               ),
               Expanded(
                 child: charts.PieChart<String>(series,

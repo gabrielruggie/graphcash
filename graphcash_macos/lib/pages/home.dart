@@ -14,7 +14,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final List<ExpenditureProgressionSeries> exps = [
+  List<ExpenditureProgressionSeries> exps = [
     ExpenditureProgressionSeries(
       budgetRemaining: 590,
       dayNum: 1,
@@ -35,6 +35,19 @@ class _HomePageState extends State<HomePage> {
       dayNum: 4,
       barColor: charts.ColorUtil.fromDartColor(Colors.purple),
     ),
+  ];
+
+  final List<ExpenditureProgressionSeries> exps1 = [
+    ExpenditureProgressionSeries(
+      budgetRemaining: 600,
+      dayNum: 1,
+      barColor: charts.ColorUtil.fromDartColor(Colors.green),
+    ),
+    ExpenditureProgressionSeries(
+      budgetRemaining: 0,
+      dayNum: 30,
+      barColor: charts.ColorUtil.fromDartColor(Colors.green),
+    )
   ];
 
   final List<CategoryExpenditureSeries> ctgExps = [
@@ -86,6 +99,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     ExpenditureProgressionChart(
                       data: exps,
+                      data2: exps1,
                     )
                   ],
                 ),
