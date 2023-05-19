@@ -5,6 +5,8 @@ import 'package:graphcash_macos/charts/series/categoryExpenditureSeries.dart';
 import 'package:graphcash_macos/charts/catergoryExpenditureChart.dart';
 import 'package:graphcash_macos/charts/series/expenditureProgressionSeries.dart';
 import 'package:graphcash_macos/charts/expenditureProgressionChart.dart';
+import 'package:graphcash_macos/charts/averageDailyExpenditureProgressionChart.dart';
+import 'package:graphcash_macos/charts/series/averageDailyExpenditureProgressionSeries.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -50,24 +52,62 @@ class _HomePageState extends State<HomePage> {
     )
   ];
 
+  // Actual Spending Curve
+  List<AverageDailyExpenditureProgressionSeries> avg = [
+    AverageDailyExpenditureProgressionSeries(
+      amountSpent: 15,
+      dayNum: 1,
+      barColor: charts.ColorUtil.fromDartColor(Colors.purple),
+    ),
+    AverageDailyExpenditureProgressionSeries(
+      amountSpent: 24,
+      dayNum: 2,
+      barColor: charts.ColorUtil.fromDartColor(Colors.purple),
+    ),
+    AverageDailyExpenditureProgressionSeries(
+      amountSpent: 26,
+      dayNum: 3,
+      barColor: charts.ColorUtil.fromDartColor(Colors.purple),
+    ),
+    AverageDailyExpenditureProgressionSeries(
+      amountSpent: 10,
+      dayNum: 4,
+      barColor: charts.ColorUtil.fromDartColor(Colors.purple),
+    ),
+  ];
+
+  // Ideal Average Spending Curve
+  final List<AverageDailyExpenditureProgressionSeries> avg1 = [
+    AverageDailyExpenditureProgressionSeries(
+      amountSpent: 20,
+      dayNum: 0,
+      barColor: charts.ColorUtil.fromDartColor(Colors.green),
+    ),
+    AverageDailyExpenditureProgressionSeries(
+      amountSpent: 20,
+      dayNum: 30,
+      barColor: charts.ColorUtil.fromDartColor(Colors.green),
+    )
+  ];
+
   final List<CategoryExpenditureSeries> ctgExps = [
     CategoryExpenditureSeries(
-      categoryName: "PH1",
+      categoryName: "Groceries",
       totalAmount: 100,
       barColor: charts.ColorUtil.fromDartColor(Colors.purple),
     ),
     CategoryExpenditureSeries(
-      categoryName: "PH2",
+      categoryName: "Bars",
       totalAmount: 200,
       barColor: charts.ColorUtil.fromDartColor(Colors.purple),
     ),
     CategoryExpenditureSeries(
-      categoryName: "PH3",
+      categoryName: "Fast Food",
       totalAmount: 300,
       barColor: charts.ColorUtil.fromDartColor(Colors.purple),
     ),
     CategoryExpenditureSeries(
-      categoryName: "PH4",
+      categoryName: "Clothes",
       totalAmount: 400,
       barColor: charts.ColorUtil.fromDartColor(Colors.purple),
     ),
@@ -100,7 +140,9 @@ class _HomePageState extends State<HomePage> {
                     ExpenditureProgressionChart(
                       data: exps,
                       data2: exps1,
-                    )
+                    ),
+                    AverageDailyExpenditureProgressionChart(
+                        data: avg, data2: avg1)
                   ],
                 ),
               ),

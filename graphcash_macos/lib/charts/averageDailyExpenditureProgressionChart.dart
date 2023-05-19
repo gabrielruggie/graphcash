@@ -1,34 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:graphcash_macos/charts/series/expenditureProgressionSeries.dart';
+import 'package:graphcash_macos/charts/series/averageDailyExpenditureProgressionSeries.dart';
 
-class ExpenditureProgressionChart extends StatelessWidget {
-  final List<ExpenditureProgressionSeries> data;
-  final List<ExpenditureProgressionSeries> data2;
+class AverageDailyExpenditureProgressionChart extends StatelessWidget {
+  final List<AverageDailyExpenditureProgressionSeries> data;
+  final List<AverageDailyExpenditureProgressionSeries> data2;
 
-  ExpenditureProgressionChart({required this.data, required this.data2});
+  AverageDailyExpenditureProgressionChart(
+      {required this.data, required this.data2});
 
   @override
   Widget build(BuildContext context) {
-    List<charts.Series<ExpenditureProgressionSeries, num>> series = [
+    List<charts.Series<AverageDailyExpenditureProgressionSeries, num>> series =
+        [
       charts.Series(
           id: "Category Expenditures",
           data: data,
           // X Axis
-          domainFn: (ExpenditureProgressionSeries series, _) => series.dayNum,
+          domainFn: (AverageDailyExpenditureProgressionSeries series, _) =>
+              series.dayNum,
           // Y Axis
-          measureFn: (ExpenditureProgressionSeries series, _) =>
-              series.budgetRemaining,
-          colorFn: (ExpenditureProgressionSeries series, _) => series.barColor),
+          measureFn: (AverageDailyExpenditureProgressionSeries series, _) =>
+              series.amountSpent,
+          colorFn: (AverageDailyExpenditureProgressionSeries series, _) =>
+              series.barColor),
       charts.Series(
           id: "Category Expenditures1",
           data: data2,
           // X Axis
-          domainFn: (ExpenditureProgressionSeries series, _) => series.dayNum,
+          domainFn: (AverageDailyExpenditureProgressionSeries series, _) =>
+              series.dayNum,
           // Y Axis
-          measureFn: (ExpenditureProgressionSeries series, _) =>
-              series.budgetRemaining,
-          colorFn: (ExpenditureProgressionSeries series, _) => series.barColor),
+          measureFn: (AverageDailyExpenditureProgressionSeries series, _) =>
+              series.amountSpent,
+          colorFn: (AverageDailyExpenditureProgressionSeries series, _) =>
+              series.barColor),
     ];
 
     return Container(
@@ -42,7 +48,7 @@ class ExpenditureProgressionChart extends StatelessWidget {
           child: Column(
             children: <Widget>[
               const Text(
-                "Actual VS Ideal - Budget Progression",
+                "Actual VS Ideal - Average Daily Spending",
                 style:
                     TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
               ),

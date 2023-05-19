@@ -36,12 +36,20 @@ class CategoryExpenditureChart extends StatelessWidget {
                     TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
               ),
               Expanded(
-                child: charts.PieChart<String>(series,
-                    defaultRenderer: charts.ArcRendererConfig(
-                        arcRendererDecorators: [
-                          charts.ArcLabelDecorator(
-                              labelPosition: charts.ArcLabelPosition.inside)
-                        ]),
+                child: charts.BarChart(series,
+                    domainAxis: const charts.AxisSpec<String>(
+                      renderSpec: charts.GridlineRendererSpec(
+                          labelStyle:
+                              charts.TextStyleSpec(color: charts.Color.white),
+                          lineStyle:
+                              charts.LineStyleSpec(color: charts.Color.white)),
+                    ),
+                    primaryMeasureAxis: const charts.NumericAxisSpec(
+                        renderSpec: charts.GridlineRendererSpec(
+                            labelStyle:
+                                charts.TextStyleSpec(color: charts.Color.white),
+                            lineStyle: charts.LineStyleSpec(
+                                color: charts.Color.white))),
                     animate: true),
               )
             ],
