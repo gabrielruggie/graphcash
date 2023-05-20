@@ -37,19 +37,19 @@ class CategoryExpenditureChart extends StatelessWidget {
               ),
               Expanded(
                 child: charts.BarChart(series,
-                    domainAxis: const charts.AxisSpec<String>(
+                    domainAxis: charts.AxisSpec<String>(
                       renderSpec: charts.GridlineRendererSpec(
-                          labelStyle:
-                              charts.TextStyleSpec(color: charts.Color.white),
-                          lineStyle:
-                              charts.LineStyleSpec(color: charts.Color.white)),
+                          labelStyle: charts.TextStyleSpec(
+                              color: charts.Color.fromHex(code: "#5F5F5F")),
+                          lineStyle: charts.LineStyleSpec(
+                              color: charts.Color.fromHex(code: "#5F5F5F"))),
                     ),
-                    primaryMeasureAxis: const charts.NumericAxisSpec(
+                    primaryMeasureAxis: charts.NumericAxisSpec(
                         renderSpec: charts.GridlineRendererSpec(
-                            labelStyle:
-                                charts.TextStyleSpec(color: charts.Color.white),
+                            labelStyle: charts.TextStyleSpec(
+                                color: charts.Color.fromHex(code: "#5F5F5F")),
                             lineStyle: charts.LineStyleSpec(
-                                color: charts.Color.white))),
+                                color: charts.Color.fromHex(code: "#5F5F5F")))),
                     animate: true),
               )
             ],

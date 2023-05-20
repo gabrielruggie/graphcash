@@ -43,12 +43,14 @@ class _HomePageState extends State<HomePage> {
     ExpenditureProgressionSeries(
       budgetRemaining: 600,
       dayNum: 1,
-      barColor: charts.ColorUtil.fromDartColor(Colors.green),
+      barColor: charts.ColorUtil.fromDartColor(
+          const Color.fromARGB(255, 76, 195, 251)),
     ),
     ExpenditureProgressionSeries(
       budgetRemaining: 0,
       dayNum: 30,
-      barColor: charts.ColorUtil.fromDartColor(Colors.green),
+      barColor: charts.ColorUtil.fromDartColor(
+          const Color.fromARGB(255, 76, 195, 251)),
     )
   ];
 
@@ -81,12 +83,14 @@ class _HomePageState extends State<HomePage> {
     AverageDailyExpenditureProgressionSeries(
       amountSpent: 20,
       dayNum: 0,
-      barColor: charts.ColorUtil.fromDartColor(Colors.green),
+      barColor: charts.ColorUtil.fromDartColor(
+          const Color.fromARGB(255, 76, 195, 251)),
     ),
     AverageDailyExpenditureProgressionSeries(
       amountSpent: 20,
       dayNum: 30,
-      barColor: charts.ColorUtil.fromDartColor(Colors.green),
+      barColor: charts.ColorUtil.fromDartColor(
+          const Color.fromARGB(255, 76, 195, 251)),
     )
   ];
 

@@ -36,7 +36,7 @@ class ExpenditureProgressionChart extends StatelessWidget {
       height: 450,
       padding: const EdgeInsets.all(25),
       child: Card(
-        color: Color.fromARGB(255, 44, 44, 44),
+        color: const Color.fromARGB(255, 44, 44, 44),
         child: Padding(
           padding: const EdgeInsets.all(9.0),
           child: Column(
@@ -48,23 +48,23 @@ class ExpenditureProgressionChart extends StatelessWidget {
               ),
               Expanded(
                 child: charts.LineChart(series,
-                    domainAxis: const charts.NumericAxisSpec(
+                    domainAxis: charts.NumericAxisSpec(
                       renderSpec: charts.GridlineRendererSpec(
-                          labelStyle:
-                              charts.TextStyleSpec(color: charts.Color.white),
-                          lineStyle:
-                              charts.LineStyleSpec(color: charts.Color.white)),
+                          labelStyle: charts.TextStyleSpec(
+                              color: charts.Color.fromHex(code: "#5F5F5F")),
+                          lineStyle: charts.LineStyleSpec(
+                              color: charts.Color.fromHex(code: "#5F5F5F"))),
                       tickProviderSpec:
                           charts.BasicNumericTickProviderSpec(zeroBound: false),
                       viewport: charts.NumericExtents(
                           1, 30), // <== Changes X Axis bounds
                     ),
-                    primaryMeasureAxis: const charts.NumericAxisSpec(
+                    primaryMeasureAxis: charts.NumericAxisSpec(
                         renderSpec: charts.GridlineRendererSpec(
-                            labelStyle:
-                                charts.TextStyleSpec(color: charts.Color.white),
+                            labelStyle: charts.TextStyleSpec(
+                                color: charts.Color.fromHex(code: "#5F5F5F")),
                             lineStyle: charts.LineStyleSpec(
-                                color: charts.Color.white))),
+                                color: charts.Color.fromHex(code: "#5F5F5F")))),
                     animate: true),
               )
             ],
