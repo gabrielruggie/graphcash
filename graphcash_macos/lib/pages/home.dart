@@ -9,6 +9,7 @@ import 'package:graphcash_macos/charts/series/expenditureProgressionSeries.dart'
 import 'package:graphcash_macos/charts/expenditureProgressionChart.dart';
 import 'package:graphcash_macos/charts/averageDailyExpenditureProgressionChart.dart';
 import 'package:graphcash_macos/charts/series/averageDailyExpenditureProgressionSeries.dart';
+import 'package:graphcash_macos/utilities/generators/categoryExpendituresSeriesGenerator.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -25,20 +26,11 @@ class _HomePageState extends State<HomePage> {
     List<List<dynamic>> dataList =
         const CsvToListConverter().convert(csvString, eol: "\n");
 
-    List<CategoryExpenditureSeries> objects = <CategoryExpenditureSeries>[];
+    CategoryExpendituresSeriesGenerator ctgExpGenerator =
+        CategoryExpendituresSeriesGenerator(csvData: dataList);
+    List<CategoryExpenditureSeries> objects =
+        ctgExpGenerator.generateSeriesList();
 
-    print(dataList);
-    // Start at 1 to ignore header content
-    for (int i = 0; i < dataList.length; i++) {
-      // May want to put the index numbers in a .env file as well
-      CategoryExpenditureSeries series = CategoryExpenditureSeries(
-          totalAmount: dataList[i][2],
-          categoryName: dataList[i][3],
-          barColor: charts.ColorUtil.fromDartColor(Colors.purple));
-
-      objects.add(series);
-    }
-    // Make writing to the CSV change the state as well
     setState(() {
       ctgExps = objects;
     });
