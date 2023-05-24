@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:csv/csv.dart';
+import 'package:flutter/services.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:graphcash_macos/components/mainMenuBtn.dart';
 import 'package:graphcash_macos/charts/series/categoryExpenditureSeries.dart';
@@ -16,6 +18,32 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  List<CategoryExpenditureSeries> ctgExps = [];
+
+  void loadData() async {
+    String csvString = await rootBundle.loadString("assets/test.csv");
+    List<List<dynamic>> dataList =
+        const CsvToListConverter().convert(csvString, eol: "\n");
+
+    List<CategoryExpenditureSeries> objects = <CategoryExpenditureSeries>[];
+
+    print(dataList);
+    // Start at 1 to ignore header content
+    for (int i = 0; i < dataList.length; i++) {
+      // May want to put the index numbers in a .env file as well
+      CategoryExpenditureSeries series = CategoryExpenditureSeries(
+          totalAmount: dataList[i][2],
+          categoryName: dataList[i][3],
+          barColor: charts.ColorUtil.fromDartColor(Colors.purple));
+
+      objects.add(series);
+    }
+    // Make writing to the CSV change the state as well
+    setState(() {
+      ctgExps = objects;
+    });
+  }
+
   List<ExpenditureProgressionSeries> exps = [
     ExpenditureProgressionSeries(
       budgetRemaining: 590,
@@ -92,29 +120,6 @@ class _HomePageState extends State<HomePage> {
       barColor: charts.ColorUtil.fromDartColor(
           const Color.fromARGB(255, 76, 195, 251)),
     )
-  ];
-
-  final List<CategoryExpenditureSeries> ctgExps = [
-    CategoryExpenditureSeries(
-      categoryName: "Groceries",
-      totalAmount: 100,
-      barColor: charts.ColorUtil.fromDartColor(Colors.purple),
-    ),
-    CategoryExpenditureSeries(
-      categoryName: "Bars",
-      totalAmount: 200,
-      barColor: charts.ColorUtil.fromDartColor(Colors.purple),
-    ),
-    CategoryExpenditureSeries(
-      categoryName: "Fast Food",
-      totalAmount: 300,
-      barColor: charts.ColorUtil.fromDartColor(Colors.purple),
-    ),
-    CategoryExpenditureSeries(
-      categoryName: "Clothes",
-      totalAmount: 400,
-      barColor: charts.ColorUtil.fromDartColor(Colors.purple),
-    ),
   ];
 
   @override
@@ -203,9 +208,11 @@ class _HomePageState extends State<HomePage> {
                           Color.fromARGB(255, 118, 19, 205)
                         ],
                       ),
-                      onPressed: () {},
+                      onPressed: () async {
+                        loadData();
+                      },
                       child: const Text(
-                        'Generate Report',
+                        'Refresh',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 20,

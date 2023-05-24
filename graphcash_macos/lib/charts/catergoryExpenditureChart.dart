@@ -1,18 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:flutter/services.dart';
 import 'package:graphcash_macos/charts/series/categoryExpenditureSeries.dart';
 
-class CategoryExpenditureChart extends StatelessWidget {
+class CategoryExpenditureChart extends StatefulWidget {
   final List<CategoryExpenditureSeries> data;
+  const CategoryExpenditureChart({Key? key, required this.data})
+      : super(key: key);
 
-  CategoryExpenditureChart({required this.data});
+  @override
+  State<CategoryExpenditureChart> createState() =>
+      _CategoryExpenditureChartState();
+}
 
+// Try putting the load function higher up
+class _CategoryExpenditureChartState extends State<CategoryExpenditureChart> {
   @override
   Widget build(BuildContext context) {
     List<charts.Series<CategoryExpenditureSeries, String>> series = [
       charts.Series(
           id: "Category Expenditures",
-          data: data,
+          data: widget.data,
           domainFn: (CategoryExpenditureSeries series, _) =>
               series.categoryName,
           measureFn: (CategoryExpenditureSeries series, _) =>

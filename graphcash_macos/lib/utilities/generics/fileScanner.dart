@@ -1,28 +1,21 @@
-import 'dart:io';
 import 'package:csv/csv.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
 class FileScanner<T> {
-  final File file;
+  final String filepath;
+  List<List<dynamic>>? data;
 
-  FileScanner({required this.file});
+  FileScanner({required this.filepath, this.data});
 
-  // Reads in data from CSV file passed in
-  List<List<dynamic>> processCsv() {
-    this.file.readAsString().then((String result) {
-      return const CsvToListConverter().convert(result, eol: "\n");
-    });
+  void loadAsset() async {
+    String assets = await rootBundle.loadString(this.filepath);
 
-    throw const FormatException('There was a problem processing file');
+    this.data = const CsvToListConverter().convert(assets);
   }
 
-  // List<T> getListOfObjects() {
-  //   List<List<dynamic>> csvData = processCsv();
-  //   List<T> objects = <T>[];
-
-  //   // Start at 1 to ignore header content
-  //   for (var i = 1; i < csvData.length; i++) {
-  //     csvData[i][4];
-  //   }
+  // Reads in data from CSV file passed in
+  // List<List<dynamic>> processCsv() {
+  //   return const CsvToListConverter().convert(this.assets, eol: "\n");
   // }
 
   // PUT WRITING STUFF BELOW
