@@ -1,6 +1,5 @@
-name,31,100,food,600
-name,31,100,food,600
-name,31,200,home,600
-name,31,300,work,600
-name,31,300,school,600
-name,31,145,clothes,600
+name,31,0,category,600
+name,1,24,food,600
+name,2,16,home,600
+name,3,10,work,600
+name,4,90,school,600

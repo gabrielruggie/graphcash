@@ -9,13 +9,15 @@ class CategoryExpendituresSeriesGenerator
 
   CategoryExpendituresSeriesGenerator({required this.csvData});
 
+  // this will need to be refined when we have actual categories
+  // Add up all categories first before creating series objects
   @override
   List<CategoryExpenditureSeries> generateSeriesList() {
     List<CategoryExpenditureSeries> objects = <CategoryExpenditureSeries>[];
 
     print(csvData);
     // Start at 1 to ignore header content
-    for (int i = 0; i < csvData.length; i++) {
+    for (int i = 1; i < csvData.length; i++) {
       // May want to put the index numbers in a .env file as well
       CategoryExpenditureSeries series = CategoryExpenditureSeries(
           totalAmount: csvData[i][2],

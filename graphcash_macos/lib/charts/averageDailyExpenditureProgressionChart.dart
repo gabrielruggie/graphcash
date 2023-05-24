@@ -2,20 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:graphcash_macos/charts/series/averageDailyExpenditureProgressionSeries.dart';
 
-class AverageDailyExpenditureProgressionChart extends StatelessWidget {
-  final List<AverageDailyExpenditureProgressionSeries> data;
-  final List<AverageDailyExpenditureProgressionSeries> data2;
+class AverageDailyExpenditureProgressionChart extends StatefulWidget {
+  final List<AverageDailyExpenditureProgressionSeries> actualData;
+  final List<AverageDailyExpenditureProgressionSeries> idealData;
 
-  AverageDailyExpenditureProgressionChart(
-      {required this.data, required this.data2});
+  const AverageDailyExpenditureProgressionChart(
+      {Key? key, required this.actualData, required this.idealData})
+      : super(key: key);
 
+  @override
+  State<AverageDailyExpenditureProgressionChart> createState() =>
+      _AverageDailyExpenditureProgressionChart();
+}
+
+class _AverageDailyExpenditureProgressionChart
+    extends State<AverageDailyExpenditureProgressionChart> {
   @override
   Widget build(BuildContext context) {
     List<charts.Series<AverageDailyExpenditureProgressionSeries, num>> series =
         [
       charts.Series(
           id: "Category Expenditures",
-          data: data,
+          data: widget.actualData,
           // X Axis
           domainFn: (AverageDailyExpenditureProgressionSeries series, _) =>
               series.dayNum,
@@ -26,7 +34,7 @@ class AverageDailyExpenditureProgressionChart extends StatelessWidget {
               series.barColor),
       charts.Series(
           id: "Category Expenditures1",
-          data: data2,
+          data: widget.idealData,
           // X Axis
           domainFn: (AverageDailyExpenditureProgressionSeries series, _) =>
               series.dayNum,
