@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:csv/csv.dart';
 import 'package:flutter/services.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
+//import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:graphcash_macos/components/mainMenuBtn.dart';
 import 'package:graphcash_macos/charts/series/categoryExpenditureSeries.dart';
 import 'package:graphcash_macos/charts/catergoryExpenditureChart.dart';
@@ -13,6 +13,7 @@ import 'package:graphcash_macos/utilities/generators/categoryExpendituresSeriesG
 import 'package:graphcash_macos/utilities/generators/averageDailyExpendituresSeriesGenerator.dart';
 import 'package:graphcash_macos/utilities/generators/expenditureProgressionSeriesGeneraotr.dart';
 
+// When creating the write function, call the load data again to change the state of the lists
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
