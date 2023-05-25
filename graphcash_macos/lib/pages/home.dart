@@ -11,6 +11,7 @@ import 'package:graphcash_macos/charts/averageDailyExpenditureProgressionChart.d
 import 'package:graphcash_macos/charts/series/averageDailyExpenditureProgressionSeries.dart';
 import 'package:graphcash_macos/utilities/generators/categoryExpendituresSeriesGenerator.dart';
 import 'package:graphcash_macos/utilities/generators/averageDailyExpendituresSeriesGenerator.dart';
+import 'package:graphcash_macos/utilities/generators/expenditureProgressionSeriesGeneraotr.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -23,6 +24,8 @@ class _HomePageState extends State<HomePage> {
   List<CategoryExpenditureSeries> ctgExps = [];
   List<AverageDailyExpenditureProgressionSeries> avgActual = [];
   List<AverageDailyExpenditureProgressionSeries> avgIdeal = [];
+  List<ExpenditureProgressionSeries> expActual = [];
+  List<ExpenditureProgressionSeries> expIdeal = [];
 
   void loadData() async {
     String csvString = await rootBundle.loadString("assets/test.csv");
@@ -43,85 +46,54 @@ class _HomePageState extends State<HomePage> {
         idealAverageDailyExpendituresSeriesObjects =
         avgGenerator.generateIdealSeriesList();
 
+    ExpenditureProgressionSeriesGenerator expGenerator =
+        ExpenditureProgressionSeriesGenerator(csvData: dataList);
+    List<ExpenditureProgressionSeries> actualExpenditureSeriesObjects =
+        expGenerator.generateSeriesList();
+    List<ExpenditureProgressionSeries> idealExpenditureSeriesObjects =
+        expGenerator.generateIdealSeriesList();
+
     setState(() {
       ctgExps = categoryExpenditureSeriesObjects;
       avgActual = actualAverageDailyExpendituresSeriesObjects;
       avgIdeal = idealAverageDailyExpendituresSeriesObjects;
+      expActual = actualExpenditureSeriesObjects;
+      expIdeal = idealExpenditureSeriesObjects;
     });
   }
 
-  List<ExpenditureProgressionSeries> exps = [
-    ExpenditureProgressionSeries(
-      budgetRemaining: 590,
-      dayNum: 1,
-      barColor: charts.ColorUtil.fromDartColor(Colors.purple),
-    ),
-    ExpenditureProgressionSeries(
-      budgetRemaining: 500,
-      dayNum: 2,
-      barColor: charts.ColorUtil.fromDartColor(Colors.purple),
-    ),
-    ExpenditureProgressionSeries(
-      budgetRemaining: 445,
-      dayNum: 3,
-      barColor: charts.ColorUtil.fromDartColor(Colors.purple),
-    ),
-    ExpenditureProgressionSeries(
-      budgetRemaining: 410,
-      dayNum: 4,
-      barColor: charts.ColorUtil.fromDartColor(Colors.purple),
-    ),
-  ];
-
-  final List<ExpenditureProgressionSeries> exps1 = [
-    ExpenditureProgressionSeries(
-      budgetRemaining: 600,
-      dayNum: 1,
-      barColor: charts.ColorUtil.fromDartColor(
-          const Color.fromARGB(255, 76, 195, 251)),
-    ),
-    ExpenditureProgressionSeries(
-      budgetRemaining: 0,
-      dayNum: 30,
-      barColor: charts.ColorUtil.fromDartColor(
-          const Color.fromARGB(255, 76, 195, 251)),
-    )
-  ];
-
-  // // Actual Spending Curve
-  // List<AverageDailyExpenditureProgressionSeries> avg = [
-  //   AverageDailyExpenditureProgressionSeries(
-  //     amountSpent: 15,
+  // List<ExpenditureProgressionSeries> exps = [
+  //   ExpenditureProgressionSeries(
+  //     budgetRemaining: 590,
   //     dayNum: 1,
   //     barColor: charts.ColorUtil.fromDartColor(Colors.purple),
   //   ),
-  //   AverageDailyExpenditureProgressionSeries(
-  //     amountSpent: 24,
+  //   ExpenditureProgressionSeries(
+  //     budgetRemaining: 500,
   //     dayNum: 2,
   //     barColor: charts.ColorUtil.fromDartColor(Colors.purple),
   //   ),
-  //   AverageDailyExpenditureProgressionSeries(
-  //     amountSpent: 26,
+  //   ExpenditureProgressionSeries(
+  //     budgetRemaining: 445,
   //     dayNum: 3,
   //     barColor: charts.ColorUtil.fromDartColor(Colors.purple),
   //   ),
-  //   AverageDailyExpenditureProgressionSeries(
-  //     amountSpent: 10,
+  //   ExpenditureProgressionSeries(
+  //     budgetRemaining: 410,
   //     dayNum: 4,
   //     barColor: charts.ColorUtil.fromDartColor(Colors.purple),
   //   ),
   // ];
 
-  // // Ideal Average Spending Curve
-  // final List<AverageDailyExpenditureProgressionSeries> avg1 = [
-  //   AverageDailyExpenditureProgressionSeries(
-  //     amountSpent: 20,
-  //     dayNum: 0,
+  // final List<ExpenditureProgressionSeries> exps1 = [
+  //   ExpenditureProgressionSeries(
+  //     budgetRemaining: 600,
+  //     dayNum: 1,
   //     barColor: charts.ColorUtil.fromDartColor(
   //         const Color.fromARGB(255, 76, 195, 251)),
   //   ),
-  //   AverageDailyExpenditureProgressionSeries(
-  //     amountSpent: 20,
+  //   ExpenditureProgressionSeries(
+  //     budgetRemaining: 0,
   //     dayNum: 30,
   //     barColor: charts.ColorUtil.fromDartColor(
   //         const Color.fromARGB(255, 76, 195, 251)),
@@ -153,8 +125,8 @@ class _HomePageState extends State<HomePage> {
                       data: ctgExps,
                     ),
                     ExpenditureProgressionChart(
-                      data: exps,
-                      data2: exps1,
+                      actualData: expActual,
+                      idealData: expIdeal,
                     ),
                     AverageDailyExpenditureProgressionChart(
                         actualData: avgActual, idealData: avgIdeal)
