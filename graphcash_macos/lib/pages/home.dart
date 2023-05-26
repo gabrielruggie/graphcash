@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:csv/csv.dart';
 import 'package:flutter/services.dart';
-//import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:graphcash_macos/components/mainMenuBtn.dart';
 import 'package:graphcash_macos/charts/series/categoryExpenditureSeries.dart';
 import 'package:graphcash_macos/charts/catergoryExpenditureChart.dart';
@@ -62,44 +61,6 @@ class _HomePageState extends State<HomePage> {
       expIdeal = idealExpenditureSeriesObjects;
     });
   }
-
-  // List<ExpenditureProgressionSeries> exps = [
-  //   ExpenditureProgressionSeries(
-  //     budgetRemaining: 590,
-  //     dayNum: 1,
-  //     barColor: charts.ColorUtil.fromDartColor(Colors.purple),
-  //   ),
-  //   ExpenditureProgressionSeries(
-  //     budgetRemaining: 500,
-  //     dayNum: 2,
-  //     barColor: charts.ColorUtil.fromDartColor(Colors.purple),
-  //   ),
-  //   ExpenditureProgressionSeries(
-  //     budgetRemaining: 445,
-  //     dayNum: 3,
-  //     barColor: charts.ColorUtil.fromDartColor(Colors.purple),
-  //   ),
-  //   ExpenditureProgressionSeries(
-  //     budgetRemaining: 410,
-  //     dayNum: 4,
-  //     barColor: charts.ColorUtil.fromDartColor(Colors.purple),
-  //   ),
-  // ];
-
-  // final List<ExpenditureProgressionSeries> exps1 = [
-  //   ExpenditureProgressionSeries(
-  //     budgetRemaining: 600,
-  //     dayNum: 1,
-  //     barColor: charts.ColorUtil.fromDartColor(
-  //         const Color.fromARGB(255, 76, 195, 251)),
-  //   ),
-  //   ExpenditureProgressionSeries(
-  //     budgetRemaining: 0,
-  //     dayNum: 30,
-  //     barColor: charts.ColorUtil.fromDartColor(
-  //         const Color.fromARGB(255, 76, 195, 251)),
-  //   )
-  // ];
 
   @override
   Widget build(BuildContext context) {
