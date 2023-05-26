@@ -27,6 +27,11 @@ class _HomePageState extends State<HomePage> {
   List<ExpenditureProgressionSeries> expActual = [];
   List<ExpenditureProgressionSeries> expIdeal = [];
 
+  final _formKey = GlobalKey<FormState>();
+  final transactionNameController = TextEditingController();
+  final transactionCategoryController = TextEditingController();
+  final transactionAmountController = TextEditingController();
+
   void loadData() async {
     String csvString = await rootBundle.loadString("assets/test.csv");
     List<List<dynamic>> dataList =
@@ -130,7 +135,72 @@ class _HomePageState extends State<HomePage> {
                           Color.fromARGB(255, 152, 46, 252)
                         ],
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                backgroundColor:
+                                    const Color.fromARGB(255, 33, 33, 33),
+                                scrollable: true,
+                                title: const Text(
+                                  'New Transaction',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                content: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Form(
+                                    key: _formKey,
+                                    child: Column(
+                                      children: <Widget>[
+                                        TextFormField(
+                                          style: const TextStyle(
+                                              color: Colors.white),
+                                          controller: transactionNameController,
+                                          decoration: const InputDecoration(
+                                              labelText: 'Name',
+                                              labelStyle: TextStyle(
+                                                  color: Colors.white),
+                                              icon: Icon(Icons.account_box),
+                                              iconColor: Colors.white),
+                                        ),
+                                        TextFormField(
+                                          style: const TextStyle(
+                                              color: Colors.white),
+                                          controller:
+                                              transactionCategoryController,
+                                          decoration: const InputDecoration(
+                                            labelText: 'Category',
+                                            labelStyle:
+                                                TextStyle(color: Colors.white),
+                                            icon: Icon(Icons.account_box),
+                                            iconColor: Colors.white,
+                                          ),
+                                        ),
+                                        TextFormField(
+                                          style: const TextStyle(
+                                              color: Colors.white),
+                                          controller:
+                                              transactionAmountController,
+                                          decoration: const InputDecoration(
+                                              labelText: 'Amount',
+                                              labelStyle: TextStyle(
+                                                  color: Colors.white),
+                                              icon: Icon(Icons.account_box),
+                                              iconColor: Colors.white),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                actions: [
+                                  TextButton(
+                                      child: const Text("Submit"),
+                                      onPressed: () {})
+                                ],
+                              );
+                            });
+                      },
                       child: const Text(
                         'New Transaction',
                         style: TextStyle(
