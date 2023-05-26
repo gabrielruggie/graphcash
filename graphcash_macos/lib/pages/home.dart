@@ -161,7 +161,7 @@ class _HomePageState extends State<HomePage> {
                                               labelText: 'Name',
                                               labelStyle: TextStyle(
                                                   color: Colors.white),
-                                              icon: Icon(Icons.account_box),
+                                              icon: Icon(Icons.badge),
                                               iconColor: Colors.white),
                                         ),
                                         TextFormField(
@@ -173,7 +173,7 @@ class _HomePageState extends State<HomePage> {
                                             labelText: 'Category',
                                             labelStyle:
                                                 TextStyle(color: Colors.white),
-                                            icon: Icon(Icons.account_box),
+                                            icon: Icon(Icons.catching_pokemon),
                                             iconColor: Colors.white,
                                           ),
                                         ),
@@ -186,7 +186,7 @@ class _HomePageState extends State<HomePage> {
                                               labelText: 'Amount',
                                               labelStyle: TextStyle(
                                                   color: Colors.white),
-                                              icon: Icon(Icons.account_box),
+                                              icon: Icon(Icons.attach_money),
                                               iconColor: Colors.white),
                                         ),
                                       ],
@@ -196,7 +196,9 @@ class _HomePageState extends State<HomePage> {
                                 actions: [
                                   TextButton(
                                       child: const Text("Submit"),
-                                      onPressed: () {})
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      })
                                 ],
                               );
                             });
