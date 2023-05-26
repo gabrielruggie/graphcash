@@ -2,18 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:graphcash_macos/charts/series/expenditureProgressionSeries.dart';
 
-class ExpenditureProgressionChart extends StatelessWidget {
-  final List<ExpenditureProgressionSeries> data;
-  final List<ExpenditureProgressionSeries> data2;
+class ExpenditureProgressionChart extends StatefulWidget {
+  final List<ExpenditureProgressionSeries> actualData;
+  final List<ExpenditureProgressionSeries> idealData;
 
-  ExpenditureProgressionChart({required this.data, required this.data2});
+  const ExpenditureProgressionChart(
+      {Key? key, required this.actualData, required this.idealData})
+      : super(key: key);
 
+  @override
+  State<ExpenditureProgressionChart> createState() =>
+      _ExpenditureProgressionChart();
+}
+
+class _ExpenditureProgressionChart extends State<ExpenditureProgressionChart> {
   @override
   Widget build(BuildContext context) {
     List<charts.Series<ExpenditureProgressionSeries, num>> series = [
       charts.Series(
           id: "Category Expenditures",
-          data: data,
+          data: widget.actualData,
           // X Axis
           domainFn: (ExpenditureProgressionSeries series, _) => series.dayNum,
           // Y Axis
@@ -22,7 +30,7 @@ class ExpenditureProgressionChart extends StatelessWidget {
           colorFn: (ExpenditureProgressionSeries series, _) => series.barColor),
       charts.Series(
           id: "Category Expenditures1",
-          data: data2,
+          data: widget.idealData,
           // X Axis
           domainFn: (ExpenditureProgressionSeries series, _) => series.dayNum,
           // Y Axis

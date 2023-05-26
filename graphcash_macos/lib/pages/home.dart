@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:csv/csv.dart';
+import 'package:flutter/services.dart';
 import 'package:graphcash_macos/components/mainMenuBtn.dart';
 import 'package:graphcash_macos/charts/series/categoryExpenditureSeries.dart';
 import 'package:graphcash_macos/charts/catergoryExpenditureChart.dart';
@@ -7,7 +8,11 @@ import 'package:graphcash_macos/charts/series/expenditureProgressionSeries.dart'
 import 'package:graphcash_macos/charts/expenditureProgressionChart.dart';
 import 'package:graphcash_macos/charts/averageDailyExpenditureProgressionChart.dart';
 import 'package:graphcash_macos/charts/series/averageDailyExpenditureProgressionSeries.dart';
+import 'package:graphcash_macos/utilities/generators/categoryExpendituresSeriesGenerator.dart';
+import 'package:graphcash_macos/utilities/generators/averageDailyExpendituresSeriesGenerator.dart';
+import 'package:graphcash_macos/utilities/generators/expenditureProgressionSeriesGeneraotr.dart';
 
+// When creating the write function, call the load data again to change the state of the lists
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -16,106 +21,46 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<ExpenditureProgressionSeries> exps = [
-    ExpenditureProgressionSeries(
-      budgetRemaining: 590,
-      dayNum: 1,
-      barColor: charts.ColorUtil.fromDartColor(Colors.purple),
-    ),
-    ExpenditureProgressionSeries(
-      budgetRemaining: 500,
-      dayNum: 2,
-      barColor: charts.ColorUtil.fromDartColor(Colors.purple),
-    ),
-    ExpenditureProgressionSeries(
-      budgetRemaining: 445,
-      dayNum: 3,
-      barColor: charts.ColorUtil.fromDartColor(Colors.purple),
-    ),
-    ExpenditureProgressionSeries(
-      budgetRemaining: 410,
-      dayNum: 4,
-      barColor: charts.ColorUtil.fromDartColor(Colors.purple),
-    ),
-  ];
+  List<CategoryExpenditureSeries> ctgExps = [];
+  List<AverageDailyExpenditureProgressionSeries> avgActual = [];
+  List<AverageDailyExpenditureProgressionSeries> avgIdeal = [];
+  List<ExpenditureProgressionSeries> expActual = [];
+  List<ExpenditureProgressionSeries> expIdeal = [];
 
-  final List<ExpenditureProgressionSeries> exps1 = [
-    ExpenditureProgressionSeries(
-      budgetRemaining: 600,
-      dayNum: 1,
-      barColor: charts.ColorUtil.fromDartColor(
-          const Color.fromARGB(255, 76, 195, 251)),
-    ),
-    ExpenditureProgressionSeries(
-      budgetRemaining: 0,
-      dayNum: 30,
-      barColor: charts.ColorUtil.fromDartColor(
-          const Color.fromARGB(255, 76, 195, 251)),
-    )
-  ];
+  void loadData() async {
+    String csvString = await rootBundle.loadString("assets/test.csv");
+    List<List<dynamic>> dataList =
+        const CsvToListConverter().convert(csvString, eol: "\n");
 
-  // Actual Spending Curve
-  List<AverageDailyExpenditureProgressionSeries> avg = [
-    AverageDailyExpenditureProgressionSeries(
-      amountSpent: 15,
-      dayNum: 1,
-      barColor: charts.ColorUtil.fromDartColor(Colors.purple),
-    ),
-    AverageDailyExpenditureProgressionSeries(
-      amountSpent: 24,
-      dayNum: 2,
-      barColor: charts.ColorUtil.fromDartColor(Colors.purple),
-    ),
-    AverageDailyExpenditureProgressionSeries(
-      amountSpent: 26,
-      dayNum: 3,
-      barColor: charts.ColorUtil.fromDartColor(Colors.purple),
-    ),
-    AverageDailyExpenditureProgressionSeries(
-      amountSpent: 10,
-      dayNum: 4,
-      barColor: charts.ColorUtil.fromDartColor(Colors.purple),
-    ),
-  ];
+    CategoryExpendituresSeriesGenerator ctgExpGenerator =
+        CategoryExpendituresSeriesGenerator(csvData: dataList);
+    List<CategoryExpenditureSeries> categoryExpenditureSeriesObjects =
+        ctgExpGenerator.generateSeriesList();
 
-  // Ideal Average Spending Curve
-  final List<AverageDailyExpenditureProgressionSeries> avg1 = [
-    AverageDailyExpenditureProgressionSeries(
-      amountSpent: 20,
-      dayNum: 0,
-      barColor: charts.ColorUtil.fromDartColor(
-          const Color.fromARGB(255, 76, 195, 251)),
-    ),
-    AverageDailyExpenditureProgressionSeries(
-      amountSpent: 20,
-      dayNum: 30,
-      barColor: charts.ColorUtil.fromDartColor(
-          const Color.fromARGB(255, 76, 195, 251)),
-    )
-  ];
+    AverageDailyExpendituresSeriesGenerator avgGenerator =
+        AverageDailyExpendituresSeriesGenerator(csvData: dataList);
+    List<AverageDailyExpenditureProgressionSeries>
+        actualAverageDailyExpendituresSeriesObjects =
+        avgGenerator.generateSeriesList();
+    List<AverageDailyExpenditureProgressionSeries>
+        idealAverageDailyExpendituresSeriesObjects =
+        avgGenerator.generateIdealSeriesList();
 
-  final List<CategoryExpenditureSeries> ctgExps = [
-    CategoryExpenditureSeries(
-      categoryName: "Groceries",
-      totalAmount: 100,
-      barColor: charts.ColorUtil.fromDartColor(Colors.purple),
-    ),
-    CategoryExpenditureSeries(
-      categoryName: "Bars",
-      totalAmount: 200,
-      barColor: charts.ColorUtil.fromDartColor(Colors.purple),
-    ),
-    CategoryExpenditureSeries(
-      categoryName: "Fast Food",
-      totalAmount: 300,
-      barColor: charts.ColorUtil.fromDartColor(Colors.purple),
-    ),
-    CategoryExpenditureSeries(
-      categoryName: "Clothes",
-      totalAmount: 400,
-      barColor: charts.ColorUtil.fromDartColor(Colors.purple),
-    ),
-  ];
+    ExpenditureProgressionSeriesGenerator expGenerator =
+        ExpenditureProgressionSeriesGenerator(csvData: dataList);
+    List<ExpenditureProgressionSeries> actualExpenditureSeriesObjects =
+        expGenerator.generateSeriesList();
+    List<ExpenditureProgressionSeries> idealExpenditureSeriesObjects =
+        expGenerator.generateIdealSeriesList();
+
+    setState(() {
+      ctgExps = categoryExpenditureSeriesObjects;
+      avgActual = actualAverageDailyExpendituresSeriesObjects;
+      avgIdeal = idealAverageDailyExpendituresSeriesObjects;
+      expActual = actualExpenditureSeriesObjects;
+      expIdeal = idealExpenditureSeriesObjects;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -142,11 +87,11 @@ class _HomePageState extends State<HomePage> {
                       data: ctgExps,
                     ),
                     ExpenditureProgressionChart(
-                      data: exps,
-                      data2: exps1,
+                      actualData: expActual,
+                      idealData: expIdeal,
                     ),
                     AverageDailyExpenditureProgressionChart(
-                        data: avg, data2: avg1)
+                        actualData: avgActual, idealData: avgIdeal)
                   ],
                 ),
               ),
@@ -203,9 +148,11 @@ class _HomePageState extends State<HomePage> {
                           Color.fromARGB(255, 118, 19, 205)
                         ],
                       ),
-                      onPressed: () {},
+                      onPressed: () async {
+                        loadData();
+                      },
                       child: const Text(
-                        'Generate Report',
+                        'Refresh',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 20,
