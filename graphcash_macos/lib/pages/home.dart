@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:csv/csv.dart';
 import 'package:flutter/services.dart';
 import 'package:graphcash_macos/utilities/graphCashFileScanner.dart';
 import 'package:graphcash_macos/components/mainMenuBtn.dart';
@@ -30,17 +27,20 @@ class _HomePageState extends State<HomePage> {
   List<ExpenditureProgressionSeries> expActual = [];
   List<ExpenditureProgressionSeries> expIdeal = [];
 
+  // Remaining Budget that updates with every transaction
+  int currentBalance = 0;
+
   final _formKey = GlobalKey<FormState>();
   final transactionNameController = TextEditingController();
   final transactionCategoryController = TextEditingController();
   final transactionAmountController = TextEditingController();
 
   void loadData() async {
-    String csvString = await rootBundle.loadString("assets/test.csv");
-    //String csvString = await dataFile.readAsString();
+    var scanner = GraphCashFileScanner();
+    List<List<dynamic>> dataList = await scanner.fileContents;
 
-    List<List<dynamic>> dataList =
-        const CsvToListConverter().convert(csvString, eol: "\n");
+    // budget value of last transaction. If none ==> gets header's value
+    currentBalance = dataList.last[4];
 
     CategoryExpendituresSeriesGenerator ctgExpGenerator =
         CategoryExpendituresSeriesGenerator(csvData: dataList);
@@ -204,7 +204,26 @@ class _HomePageState extends State<HomePage> {
                                       onPressed: () {
                                         GraphCashFileScanner scanner =
                                             GraphCashFileScanner();
-                                        var contents = scanner.FileContents;
+
+                                        String transactionName =
+                                            transactionNameController.text;
+                                        String transactionAmt =
+                                            transactionAmountController.text;
+                                        String transactionCat =
+                                            transactionCategoryController.text;
+
+                                        int remainingBalance = currentBalance -
+                                            int.parse(transactionAmt);
+                                        scanner.createNewTransaction(
+                                            transactionName,
+                                            "4",
+                                            transactionAmt,
+                                            transactionCat,
+                                            "$remainingBalance");
+
+                                        var contents = scanner.fileContents;
+                                        print(contents);
+                                        // Close transaction window upon submission
                                         Navigator.of(context).pop();
                                       })
                                 ],

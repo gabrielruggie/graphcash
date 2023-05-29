@@ -1,10 +1,6 @@
 import 'dart:async';
 import 'dart:io';
-
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:csv/csv.dart';
-import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 
 class GraphCashFileScanner {
@@ -19,20 +15,20 @@ class GraphCashFileScanner {
     return File('$path/test.csv');
   }
 
-  Future<List<List<dynamic>>> get FileContents async {
+  Future<List<List<dynamic>>> get fileContents async {
     File file = await localFile;
     String csvString = await file.readAsString();
 
     List<List<dynamic>> dataList =
         const CsvToListConverter().convert(csvString, eol: "\n");
 
-    print(dataList);
     return dataList;
   }
 
-  void writeToFile(GraphCashDataObject obj) async {
+  Future<File> writeToFile(GraphCashDataObject obj) async {
     try {
-      List<List<dynamic>> data = await FileContents;
+      File file = await localFile;
+      List<List<dynamic>> data = await fileContents;
 
       List<dynamic> newRow = <dynamic>[];
       newRow.add(obj.transactionName);
@@ -42,16 +38,35 @@ class GraphCashFileScanner {
       newRow.add(obj.budgetRemaining);
 
       data.add(newRow);
+
+      String csv = const ListToCsvConverter().convert(data);
+      // Take Out Soon
+      print("New Data: $data");
+
+      return file.writeAsString(csv);
     } catch (e) {
       throw new FormatException("There was an error writing to file");
     }
+  }
+
+  // dayNum comes from some calendar or count down ==> datetime library
+  void createNewTransaction(String name, String dayNum, String amount,
+      String category, String budgetAmountRemaining) {
+    var v = GraphCashDataObject(
+        transactionName: name,
+        dayNum: dayNum,
+        transactionAmt: amount,
+        categoryName: category,
+        budgetRemaining: budgetAmountRemaining);
+
+    writeToFile(v);
   }
 }
 
 class GraphCashDataObject {
   final String transactionName;
-  final int dayNum;
-  final int transactionAmt;
+  final String dayNum;
+  final String transactionAmt;
   final String categoryName;
   final String budgetRemaining;
 
