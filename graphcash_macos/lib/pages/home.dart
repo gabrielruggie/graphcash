@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:csv/csv.dart';
 import 'package:flutter/services.dart';
+import 'package:graphcash_macos/utilities/graphCashFileScanner.dart';
 import 'package:graphcash_macos/components/mainMenuBtn.dart';
 import 'package:graphcash_macos/charts/series/categoryExpenditureSeries.dart';
 import 'package:graphcash_macos/charts/catergoryExpenditureChart.dart';
@@ -34,6 +37,8 @@ class _HomePageState extends State<HomePage> {
 
   void loadData() async {
     String csvString = await rootBundle.loadString("assets/test.csv");
+    //String csvString = await dataFile.readAsString();
+
     List<List<dynamic>> dataList =
         const CsvToListConverter().convert(csvString, eol: "\n");
 
@@ -197,6 +202,9 @@ class _HomePageState extends State<HomePage> {
                                   TextButton(
                                       child: const Text("Submit"),
                                       onPressed: () {
+                                        GraphCashFileScanner scanner =
+                                            GraphCashFileScanner();
+                                        var contents = scanner.FileContents;
                                         Navigator.of(context).pop();
                                       })
                                 ],
