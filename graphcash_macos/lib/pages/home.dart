@@ -30,10 +30,14 @@ class _HomePageState extends State<HomePage> {
   // Remaining Budget that updates with every transaction
   int currentBalance = 0;
 
-  final _formKey = GlobalKey<FormState>();
+  final _transactionFormKey = GlobalKey<FormState>();
   final transactionNameController = TextEditingController();
   final transactionCategoryController = TextEditingController();
   final transactionAmountController = TextEditingController();
+
+  final _projectFormKey = GlobalKey<FormState>();
+  final projectDayNumController = TextEditingController();
+  final projectBudgetAmtController = TextEditingController();
 
   void loadData() async {
     var scanner = GraphCashFileScanner();
@@ -122,7 +126,76 @@ class _HomePageState extends State<HomePage> {
                           Color.fromARGB(255, 28, 153, 243)
                         ],
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                backgroundColor:
+                                    const Color.fromARGB(255, 33, 33, 33),
+                                scrollable: true,
+                                title: const Text(
+                                  'New Project',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                content: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Form(
+                                    key: _projectFormKey,
+                                    child: Column(
+                                      children: <Widget>[
+                                        TextFormField(
+                                          style: const TextStyle(
+                                              color: Colors.white),
+                                          controller: projectDayNumController,
+                                          decoration: const InputDecoration(
+                                            labelText: 'Duration (Days)',
+                                            labelStyle:
+                                                TextStyle(color: Colors.white),
+                                            icon: Icon(Icons.catching_pokemon),
+                                            iconColor: Colors.white,
+                                          ),
+                                        ),
+                                        TextFormField(
+                                          style: const TextStyle(
+                                              color: Colors.white),
+                                          controller:
+                                              projectBudgetAmtController,
+                                          decoration: const InputDecoration(
+                                              labelText: 'Budget',
+                                              labelStyle: TextStyle(
+                                                  color: Colors.white),
+                                              icon: Icon(Icons.attach_money),
+                                              iconColor: Colors.white),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                actions: [
+                                  TextButton(
+                                      child: const Text("Submit"),
+                                      onPressed: () {
+                                        GraphCashFileScanner scanner =
+                                            GraphCashFileScanner();
+
+                                        String projectDuration =
+                                            projectDayNumController.text;
+                                        String projectBudgetAmt =
+                                            projectBudgetAmtController.text;
+
+                                        scanner.createNewProject(
+                                            projectDuration, projectBudgetAmt);
+
+                                        var contents = scanner.fileContents;
+                                        print(contents);
+                                        // Close transaction window upon submission
+                                        Navigator.of(context).pop();
+                                      })
+                                ],
+                              );
+                            });
+                      },
                       child: const Text(
                         'New Project',
                         style: TextStyle(
@@ -155,7 +228,7 @@ class _HomePageState extends State<HomePage> {
                                 content: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Form(
-                                    key: _formKey,
+                                    key: _transactionFormKey,
                                     child: Column(
                                       children: <Widget>[
                                         TextFormField(
@@ -218,7 +291,7 @@ class _HomePageState extends State<HomePage> {
                                             transactionName,
                                             "4",
                                             transactionAmt,
-                                            transactionCat,
+                                            transactionCat.toLowerCase(),
                                             "$remainingBalance");
 
                                         var contents = scanner.fileContents;

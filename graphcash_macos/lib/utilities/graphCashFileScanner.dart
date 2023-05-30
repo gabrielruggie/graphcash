@@ -40,8 +40,26 @@ class GraphCashFileScanner {
       data.add(newRow);
 
       String csv = const ListToCsvConverter().convert(data);
-      // Take Out Soon
-      print("New Data: $data");
+
+      return file.writeAsString(csv);
+    } catch (e) {
+      throw new FormatException("There was an error writing to file");
+    }
+  }
+
+  Future<File> writeNewFile(GraphCashDataObject obj) async {
+    try {
+      File file = await localFile;
+
+      // Called when creating a new file. Adds the header information to the top of the CSV
+      List<dynamic> header = <dynamic>[];
+      header.add(obj.transactionName);
+      header.add(obj.dayNum);
+      header.add(obj.transactionAmt);
+      header.add(obj.categoryName);
+      header.add(obj.budgetRemaining);
+
+      String csv = const ListToCsvConverter().convert([header]);
 
       return file.writeAsString(csv);
     } catch (e) {
@@ -61,6 +79,12 @@ class GraphCashFileScanner {
 
     writeToFile(v);
   }
+
+  void createNewProject(String dayNum, String budget) {
+    var v = GraphCashDataObject.header(dayNum: dayNum, budgetRemaining: budget);
+
+    writeNewFile(v);
+  }
 }
 
 class GraphCashDataObject {
@@ -75,5 +99,12 @@ class GraphCashDataObject {
       required this.dayNum,
       required this.transactionAmt,
       required this.categoryName,
+      required this.budgetRemaining});
+
+  GraphCashDataObject.header(
+      {this.transactionName = "name",
+      required this.dayNum,
+      this.transactionAmt = "0",
+      this.categoryName = "category",
       required this.budgetRemaining});
 }
