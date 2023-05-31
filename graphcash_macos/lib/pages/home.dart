@@ -41,7 +41,7 @@ class _HomePageState extends State<HomePage> {
 
   void loadData() async {
     var scanner = GraphCashFileScanner();
-    List<List<dynamic>> dataList = await scanner.fileContents;
+    List<List<dynamic>> dataList = await scanner.csvFileContents;
 
     // budget value of last transaction. If none ==> gets header's value
     currentBalance = dataList.last[4];
@@ -187,7 +187,7 @@ class _HomePageState extends State<HomePage> {
                                         scanner.createNewProject(
                                             projectDuration, projectBudgetAmt);
 
-                                        var contents = scanner.fileContents;
+                                        var contents = scanner.csvFileContents;
                                         print(contents);
                                         // Close transaction window upon submission
                                         Navigator.of(context).pop();
@@ -294,7 +294,7 @@ class _HomePageState extends State<HomePage> {
                                             transactionCat.toLowerCase(),
                                             "$remainingBalance");
 
-                                        var contents = scanner.fileContents;
+                                        var contents = scanner.csvFileContents;
                                         print(contents);
                                         // Close transaction window upon submission
                                         Navigator.of(context).pop();
@@ -322,6 +322,8 @@ class _HomePageState extends State<HomePage> {
                       ),
                       onPressed: () async {
                         loadData();
+                        var scanner = GraphCashFileScanner();
+                        print(scanner.dateFileContents);
                       },
                       child: const Text(
                         'Refresh',

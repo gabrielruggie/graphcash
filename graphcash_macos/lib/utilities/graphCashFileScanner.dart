@@ -4,19 +4,33 @@ import 'package:csv/csv.dart';
 import 'package:path_provider/path_provider.dart';
 
 class GraphCashFileScanner {
-  Future<String> get localPath async {
+  Future<String> get _docDirPath async {
     final directory = await getApplicationDocumentsDirectory();
 
     return directory.path;
   }
 
-  Future<File> get localFile async {
-    final path = await localPath;
+  Future<File> get _csvDataFile async {
+    final path = await _docDirPath;
     return File('$path/test.csv');
   }
 
-  Future<List<List<dynamic>>> get fileContents async {
-    File file = await localFile;
+  Future<File> get _dateFile async {
+    final path = await _docDirPath;
+    return File('$path/dates.txt');
+  }
+
+  Future<String> get dateFileContents async {
+    File file = await _dateFile;
+    String dates = await file.readAsString();
+    List<String> list = dates.split("\n");
+    print(list);
+
+    return dates;
+  }
+
+  Future<List<List<dynamic>>> get csvFileContents async {
+    File file = await _csvDataFile;
     String csvString = await file.readAsString();
 
     List<List<dynamic>> dataList =
@@ -25,10 +39,10 @@ class GraphCashFileScanner {
     return dataList;
   }
 
-  Future<File> writeToFile(GraphCashDataObject obj) async {
+  Future<File> _writeNewDataToCsv(GraphCashDataObject obj) async {
     try {
-      File file = await localFile;
-      List<List<dynamic>> data = await fileContents;
+      File file = await _csvDataFile;
+      List<List<dynamic>> data = await csvFileContents;
 
       List<dynamic> newRow = <dynamic>[];
       newRow.add(obj.transactionName);
@@ -47,9 +61,9 @@ class GraphCashFileScanner {
     }
   }
 
-  Future<File> writeNewFile(GraphCashDataObject obj) async {
+  Future<File> _writeHeaderToCsv(GraphCashDataObject obj) async {
     try {
-      File file = await localFile;
+      File file = await _csvDataFile;
 
       // Called when creating a new file. Adds the header information to the top of the CSV
       List<dynamic> header = <dynamic>[];
@@ -77,13 +91,13 @@ class GraphCashFileScanner {
         categoryName: category,
         budgetRemaining: budgetAmountRemaining);
 
-    writeToFile(v);
+    _writeNewDataToCsv(v);
   }
 
   void createNewProject(String dayNum, String budget) {
     var v = GraphCashDataObject.header(dayNum: dayNum, budgetRemaining: budget);
 
-    writeNewFile(v);
+    _writeHeaderToCsv(v);
   }
 }
 
